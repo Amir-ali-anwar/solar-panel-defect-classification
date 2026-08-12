@@ -1,0 +1,61 @@
+# ------------------------------
+# OS / editor junk
+# ------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.claude/
+
+# ------------------------------
+# Python
+# ------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+.venv-ml/
+venv/
+env/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# ------------------------------
+# Frontend / Node
+# ------------------------------
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ------------------------------
+# ML training artifacts / local data
+# ------------------------------
+models/backups/
+nootebooks/Data/
+nootebooks/*.zip
+
+# Model binaries and generated plots
+models/*.keras
+models/*.h5
+models/*.pt
+models/*.pth
+models/*.onnx
+models/*.png
+models/*.jpg
+models/*.jpeg

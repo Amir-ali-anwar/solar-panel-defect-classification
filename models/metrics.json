@@ -1,0 +1,67 @@
+{
+  "test_accuracy": 0.8571428656578064,
+  "test_loss": 0.542012095451355,
+  "classification_report": {
+    "Bird-drop": {
+      "precision": 0.9259259259259259,
+      "recall": 0.8064516129032258,
+      "f1-score": 0.8620689655172413,
+      "support": 31.0
+    },
+    "Clean": {
+      "precision": 0.7941176470588235,
+      "recall": 0.9310344827586207,
+      "f1-score": 0.8571428571428571,
+      "support": 29.0
+    },
+    "Dusty": {
+      "precision": 0.8,
+      "recall": 0.8275862068965517,
+      "f1-score": 0.8135593220338984,
+      "support": 29.0
+    },
+    "Electrical-damage": {
+      "precision": 0.9333333333333333,
+      "recall": 0.9333333333333333,
+      "f1-score": 0.9333333333333333,
+      "support": 15.0
+    },
+    "Physical-Damage": {
+      "precision": 1.0,
+      "recall": 0.5454545454545454,
+      "f1-score": 0.7058823529411765,
+      "support": 11.0
+    },
+    "Snow-Covered": {
+      "precision": 0.8571428571428571,
+      "recall": 1.0,
+      "f1-score": 0.9230769230769231,
+      "support": 18.0
+    },
+    "accuracy": 0.8571428571428571,
+    "macro avg": {
+      "precision": 0.88508662724349,
+      "recall": 0.8406433635577129,
+      "f1-score": 0.849177292340905,
+      "support": 133.0
+    },
+    "weighted avg": {
+      "precision": 0.8673811044885791,
+      "recall": 0.8571428571428571,
+      "f1-score": 0.8537939219917139,
+      "support": 133.0
+    }
+  },
+  "img_size": [
+    224,
+    224
+  ],
+  "class_names": [
+    "Bird-drop",
+    "Clean",
+    "Dusty",
+    "Electrical-damage",
+    "Physical-Damage",
+    "Snow-Covered"
+  ]
+}
