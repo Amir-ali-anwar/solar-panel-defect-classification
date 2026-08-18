@@ -68,3 +68,6 @@ backend/models/*.onnx
 backend/models/*.png
 backend/models/*.jpg
 backend/models/*.jpeg
+
+# Production artifact required by the deployed backend.
+!backend/models/solar_panel_classifier.keras
