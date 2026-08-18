@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: solar-panel-classification-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: MODEL_PATH
+        value: ../models/solar_panel_classifier.keras
+      - key: CLASS_NAMES_PATH
+        value: ../models/class_names.json
+      - key: MAX_UPLOAD_MB
+        value: "8.0"
+      - key: LOG_LEVEL
+        value: INFO
+      - key: CORS_ORIGINS
+        sync: false

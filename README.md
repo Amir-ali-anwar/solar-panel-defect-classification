@@ -146,11 +146,14 @@ they don't require a trained artifact.
 ```bash
 cd frontend
 npm install
-cp .env.example .env   # set VITE_API_BASE_URL if the API isn't on localhost:8000
+cp .env.example .env   # optional: set VITE_API_BASE_URL for a remote backend URL
 npm run dev
 ```
 
 Open http://localhost:5173, drop in a panel photo, and click **Analyze photo**.
+
+By default, the frontend calls `/api/*` on the same origin. In local dev,
+Vite proxies `/api` to `http://localhost:8000`.
 
 ## Run everything with Docker Compose
 
@@ -162,6 +165,62 @@ docker compose up --build
 
 - Frontend: http://localhost:8080
 - Backend: http://localhost:8000
+
+In Docker, Nginx proxies frontend `/api/*` calls to the `backend` service,
+so the browser uses one origin (`:8080`) and avoids CORS complexity.
+
+## 4. Production deployment prep
+
+Before deploying:
+
+- Set backend env vars (`MODEL_PATH`, `CLASS_NAMES_PATH`, `CORS_ORIGINS`, `MAX_UPLOAD_MB`).
+- Ensure your host mounts `models/` read-only and contains:
+  - `solar_panel_classifier.keras`
+  - `class_names.json`
+- For split hosting (frontend on Vercel/Netlify, backend elsewhere), set:
+  - `frontend/.env`: `VITE_API_BASE_URL=https://your-backend-domain`
+  - backend `CORS_ORIGINS` to include your frontend domain.
+
+Quick smoke checks after deploy:
+
+- `GET /api/health` returns status ok and model_loaded true.
+- Upload one valid JPEG/PNG image and confirm prediction response.
+- Upload an invalid file type and confirm `415 Unsupported Media Type`.
+
+## 5. Deploy backend on Render and frontend on Vercel
+
+### A) Deploy backend on Render
+
+This repo now includes a Render Blueprint config at `render.yaml`.
+
+1. Push this project to GitHub.
+2. In Render, choose **New +** -> **Blueprint**.
+3. Select your repository and deploy.
+4. After first deploy, open the backend service settings and set:
+  - `CORS_ORIGINS=["https://<your-vercel-domain>"]`
+  - Optionally include preview domains too, for example:
+    `CORS_ORIGINS=["https://<your-vercel-domain>","https://<your-preview-domain>"]`
+5. Confirm health endpoint:
+  - `https://<your-render-domain>/api/health`
+
+### B) Deploy frontend on Vercel
+
+This repo now includes a Vercel config at `frontend/vercel.json`.
+
+1. In Vercel, create a new project from the same GitHub repo.
+2. Set **Root Directory** to `frontend`.
+3. Add environment variable:
+  - `VITE_API_BASE_URL=https://<your-render-domain>`
+4. Deploy.
+
+### C) Final connection check
+
+After both deployments:
+
+- Open your Vercel app.
+- Upload a valid image and verify prediction works.
+- Verify invalid file type returns the expected API error.
+- If browser requests fail with CORS, re-check `CORS_ORIGINS` on Render.
 
 ## Known limitations
 
