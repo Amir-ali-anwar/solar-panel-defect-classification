@@ -8,7 +8,7 @@ The project has three parts:
 
 | Path        | Purpose                                                              |
 |-------------|-----------------------------------------------------------------------|
-| `ml/`       | Training pipeline. Produces the model artifact in `models/`.         |
+| `ml/`       | Training pipeline. Produces the model artifact in `backend/models/`. |
 | `backend/`  | FastAPI service that loads the trained model and serves predictions. |
 | `frontend/` | React + Vite web app for uploading a photo and viewing the result.   |
 
@@ -23,7 +23,7 @@ python -m ml.train
 
 This reads images from `nootebooks/Data/<class_name>/*`, does a stratified
 70/15/15 train/val/test split, trains a MobileNetV2 transfer-learning model
-(frozen backbone, then a fine-tuning phase), and writes to `models/`:
+(frozen backbone, then a fine-tuning phase), and writes to `backend/models/`:
 
 - `solar_panel_classifier.keras` — the trained model
 - `class_names.json` — ordered list of class labels
@@ -52,7 +52,7 @@ original ~885-image dataset: **85.7% test accuracy** across all 6 classes,
 early-stopped at epoch 20/20 (frozen phase) and epoch 3/25 (fine-tuning).
 Per-class F1 ranged from 0.71 (Physical-Damage, the smallest class at 11
 test images) to 0.93 (Electrical-damage). Full breakdown in
-`models/metrics.json` and `models/confusion_matrix.png`.
+`backend/models/metrics.json` and `backend/models/confusion_matrix.png`.
 
 Run-to-run variance on this dataset size is real (dropout, augmentation,
 and CPU op non-determinism aren't seeded) — we've seen anywhere from 79.7%
@@ -78,9 +78,9 @@ likely because the new images had a different visual distribution (uniform
 600x600 Roboflow preprocessing vs. the original varied raw photos) and one
 class (Electrical-damage) barely grew while others grew 5-9x, worsening its
 already-thin relative representation. Lesson: **always back up
-`models/*.keras`/`*.json` before retraining on a materially different
+`backend/models/*.keras`/`*.json` before retraining on a materially different
 dataset** — we hadn't, and lost the 85.7% weights when the worse run
-overwrote them in place. `models/backups/` now holds a copy of that failed
+overwrote them in place. `backend/models/backups/` now holds a copy of that failed
 run's artifacts for reference. If you want to try augmenting the dataset
 again, a smaller, curated addition (verified images per class, not a bulk
 unfiltered dump) is likely to work better than what we tried.
@@ -157,7 +157,7 @@ Vite proxies `/api` to `http://localhost:8000`.
 
 ## Run everything with Docker Compose
 
-Train the model first (step 1) so `models/` contains the artifact, then:
+Train the model first (step 1) so `backend/models/` contains the artifact, then:
 
 ```bash
 docker compose up --build
@@ -174,7 +174,7 @@ so the browser uses one origin (`:8080`) and avoids CORS complexity.
 Before deploying:
 
 - Set backend env vars (`MODEL_PATH`, `CLASS_NAMES_PATH`, `CORS_ORIGINS`, `MAX_UPLOAD_MB`).
-- Ensure your host mounts `models/` read-only and contains:
+- Ensure your deployed backend has `backend/models/` containing:
   - `solar_panel_classifier.keras`
   - `class_names.json`
 - For split hosting (frontend on Vercel/Netlify, backend elsewhere), set:

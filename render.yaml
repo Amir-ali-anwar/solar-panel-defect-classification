@@ -9,9 +9,9 @@ services:
     autoDeploy: true
     envVars:
       - key: MODEL_PATH
-        value: ../models/solar_panel_classifier.keras
+        value: ./models/solar_panel_classifier.keras
       - key: CLASS_NAMES_PATH
-        value: ../models/class_names.json
+        value: ./models/class_names.json
       - key: MAX_UPLOAD_MB
         value: "8.0"
       - key: LOG_LEVEL

@@ -47,6 +47,7 @@ pnpm-debug.log*
 # ML training artifacts / local data
 # ------------------------------
 models/backups/
+backend/models/backups/
 nootebooks/Data/
 nootebooks/*.zip
 
@@ -59,3 +60,11 @@ models/*.onnx
 models/*.png
 models/*.jpg
 models/*.jpeg
+backend/models/*.keras
+backend/models/*.h5
+backend/models/*.pt
+backend/models/*.pth
+backend/models/*.onnx
+backend/models/*.png
+backend/models/*.jpg
+backend/models/*.jpeg

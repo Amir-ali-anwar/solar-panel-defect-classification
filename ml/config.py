@@ -5,7 +5,7 @@ ML_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = ML_DIR.parent
 
 DATA_DIR = PROJECT_ROOT / "nootebooks" / "Data"
-MODELS_DIR = PROJECT_ROOT / "models"
+MODELS_DIR = PROJECT_ROOT / "backend" / "models"
 
 IMG_HEIGHT = 224
 IMG_WIDTH = 224

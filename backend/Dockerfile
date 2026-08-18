@@ -10,13 +10,14 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app ./app
+COPY models ./models
 
-ENV MODEL_PATH=/models/solar_panel_classifier.keras
-ENV CLASS_NAMES_PATH=/models/class_names.json
+ENV MODEL_PATH=/app/models/solar_panel_classifier.keras
+ENV CLASS_NAMES_PATH=/app/models/class_names.json
 
 EXPOSE 8000
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" || exit 1
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')" || exit 1
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
